@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>Agenda Eletrônica</title>
+        <link type="text/css" rel="stylesheet" href="tema2/css/custom-theme/jquery-ui-1.8.18.custom.css"/>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="left" width="200" header="Atividades" resizable="true" closable="true" collapsible="true">
+                <h:form prependId="false">
+                    <p:commandLink value="Novo Contato" actionListener="#{agendaController.prepararAdicionarAgenda}" update="infosAgenda" oncomplete="dialogGerAgenda.show()"/>
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="center">
+                <h1>Agenda Eletrônica</h1>
+                <br/>
+                <h:form prependId="false">
+                    <p:dataTable id="tabela" var="agenda" value="#{agendaController.listarAgenda}">
+                        <p:column filterBy="#{agenda.nome}" headerText="Model" footerText="Nome" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Nome"/>
+                            </f:facet>
+                            <h:outputText value="#{agenda.nome}" />
+                        </p:column>
+                        <p:column filterBy="#{agenda.email}" headerText="Model" footerText="E-mail" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Email"/>
+                            </f:facet>
+                            <h:outputText value="#{agenda.email}"/>
+                        </p:column>
+                        <p:column filterBy="#{agenda.telefone}" headerText="Model" footerText="Telefone" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Telefone"/>
+                            </f:facet>
+                            <h:outputText value="#{agenda.telefone}"/>
+                        </p:column>
+                        <p:column filterBy="#{agenda.celular}" headerText="Model" footerText="Celular" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Celular"/>
+                            </f:facet>
+                            <h:outputText value="#{agenda.celular}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Alterar"/>
+                            </f:facet>
+                            <p:commandButton actionListener="#{agendaController.prepararAlterarAgenda}" value="Alterar" update="infosAgenda" oncomplete="dialogGerAgenda.show()"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Excluir"/>
+                            </f:facet>
+                            <p:commandButton value="Excluir" update="infosExcluir" oncomplete="dialogExcluir.show()"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
+
+        <p:dialog header="Gerencia de Agenda" widgetVar="dialogGerAgenda"  resizable="false" modal="true" showEffect="slide" width="500">
+            <h:form prependId="false">
+                <h:panelGrid id="infosAgenda" columns="2" style="margin-bottom:10px">
+
+                    <h:outputLabel for="nome" value="Nome:" />
+                    <h:inputText id="nome" value="#{agendaController.agenda.nome}"/>
+
+                    <h:outputLabel for="email" value="Email:" />
+                    <h:inputText id="email" value="#{agendaController.agenda.email}"/>
+
+                    <h:outputLabel for="telefone" value="Telefone:" />
+                    <p:inputMask id="telefone" mask="(99) 9999-9999" value="#{agendaController.agenda.telefone}"/>
+                    
+                    <h:outputLabel for="celular" value="Celular:" />
+                    <p:inputMask id="celular" mask="(99) 9999-9999" value="#{agendaController.agenda.celular}"/>
+
+                    <p:commandButton update="tabela" oncomplete="dialogGerAgenda.hide();" actionListener="#{agendaController.adicionarAgenda}" value="Inserir Contato"/>
+                    <p:commandButton update="tabela" oncomplete="dialogGerAgenda.hide();" actionListener="#{agendaController.alterarAgenda}" value="Alterar Contato"/>
+
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+   <p:dialog header="Excluir Contato" widgetVar="dialogExcluir"  resizable="false" modal="true" showEffect="slide" width="350">
+            <h:form prependId="false">
+                <h:panelGrid id="infosExcluir" columns="2" style="margin-bottom:10px">
+                    <h:outputLabel value="Digite a Senha " id="excluir" />
+                    <h:inputSecret value="#{agendaController.senha}" id="senha" required="true" label="senha" /> <br/>
+                    <p:commandButton update="tabela" actionListener="#{agendaController.login}" value="OK"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
