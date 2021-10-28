@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:head>
+        <title>Sistema de Agenda</title>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="100">
+                <h1>Agenda de Contatos</h1>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="140" rendered="true" resizable="true" closable="true" >
+                <h:form>
+                    <p:commandLink value="Novo Contato" onclick="PF('dlgContato').show()" immediate="true" update="@(#formContato)" /> 
+                </h:form>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="center">
+                <p:dialog id="dlgContato" widgetVar="dlgContato" resizable="false" width="400"  header="Adicionar Contato" modal="true" onShow="showModal();" onHide="hideModal();">
+
+                    <h:form prependId="false" id="formContato">
+                        <p:outputPanel id="panel">
+                            <p:panelGrid columns="2"  styleClass="ui-noborder">
+                                <h:outputText value="Nome"/>
+                                <p:inputText id="nome" value="#{contatoController.contato.nome}" />
+                                <h:outputText value="E-mail"/>
+                                <p:inputText id="email" value="#{contatoController.contato.email}" />
+                                <h:outputText value="Telefone"/>
+                                <p:inputText id="telefone" value="#{contatoController.contato.telefone}" />
+                                <h:outputText value="Celular"/>
+                                <p:inputText id="celular" value="#{contatoController.contato.celular}" />
+                                <p:commandButton value="Salvar" id="salvar" actionListener="#{contatoController.adicionar(actionEvent)}" 
+                                                 update="tableContatos" onclick="PF('dlgContato').hide()">
+                                </p:commandButton>
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </h:form> 
+
+
+                </p:dialog>
+                <p:dataTable id="tableContatos" value="#{contatoController.listaAgenda}" var="contatos" editable="true">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nome" />
+                        </f:facet>
+                        <h:outputText value="#{contatos.nome}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="E-mail" />
+                        </f:facet>
+                        <h:outputText value="#{contatos.email}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Telefone" />
+                        </f:facet>
+                        <h:outputText value="#{contatos.telefone}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Celular" />
+                        </f:facet>
+                        <h:outputText value="#{contatos.celular}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Editar" />
+                        </f:facet>
+                        
+                        <p:commandButton update="@(#formContato)"  value="Editar"
+                                       onclick="PF('dlgContato').show()" actionListener="#{contatoController.prepararAlterarContato(actionEvent)}">
+                            <f:setPropertyActionListener value="#{contatos}" target="#{contatoController.contato}"/>
+                            <p:resetInput target="@(#formContato)"/>
+                        </p:commandButton>
+                        
+                        
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Excluir" />
+                        </f:facet>
+                        <p:commandLink value="Excluir" action="#{contatoController.excluir(actionEvent)}" 
+                                       onclick="if(!confirm('Deseja excluir o contato #{contatos.nome} ?')) return false;" 
+                                       update="tableContatos"/>
+                    </p:column>
+
+                </p:dataTable>
+
+            </p:layoutUnit>
+
+
+        </p:layout>
+    </h:body>
+</html>
+
