@@ -27,7 +27,6 @@ public class ContatoController implements Serializable {
     
     private Contatos contato;
     private DataModel listaAgenda;
-    private Logger logger;
 
     public Contatos getContato() {
         if(this.contato == null){
@@ -65,14 +64,9 @@ public class ContatoController implements Serializable {
         contato = new Contatos();
     }
     
-    public Contatos prepararAlterarContato(ActionEvent actionEvent) {
-        logger.debug("Inicializando componentes no PostConstruct");
-        logger.debug(actionEvent);
-        Contatos contatoTemp = (Contatos) (listaAgenda.getRowData());
-        ContatoDao dao = new ContatoDao();
-        contato = dao.getContato(contatoTemp.getId());
-        logger.debug(contato);
-        return contato;
+    public Contatos prepararAlterarContato(Contatos ct) {
+        System.out.println(ct);
+        return contato = ct;
     }
 
     

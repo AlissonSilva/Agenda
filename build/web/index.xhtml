@@ -25,8 +25,9 @@
                 <p:dialog id="dlgContato" widgetVar="dlgContato" resizable="false" width="400"  header="Adicionar Contato" modal="true" onShow="showModal();" onHide="hideModal();">
 
                     <h:form prependId="false" id="formContato">
-                        <p:outputPanel id="panel">
-                            <p:panelGrid columns="2"  styleClass="ui-noborder">
+                            <p:panelGrid columns="2" id="panelGform" styleClass="ui-noborder">
+                                <h:outputText value="#"/>
+                                <h:outputText value="#{contatoController.contato.id}"/>
                                 <h:outputText value="Nome"/>
                                 <p:inputText id="nome" value="#{contatoController.contato.nome}" />
                                 <h:outputText value="E-mail"/>
@@ -39,7 +40,6 @@
                                                  update="tableContatos" onclick="PF('dlgContato').hide()">
                                 </p:commandButton>
                             </p:panelGrid>
-                        </p:outputPanel>
                     </h:form> 
 
 
@@ -74,11 +74,8 @@
                             <h:outputText value="Editar" />
                         </f:facet>
                         
-                        <p:commandButton update="@(#formContato)"  value="Editar"
-                                       onclick="PF('dlgContato').show()" actionListener="#{contatoController.prepararAlterarContato(actionEvent)}">
-                            <f:setPropertyActionListener value="#{contatos}" target="#{contatoController.contato}"/>
-                            <p:resetInput target="@(#formContato)"/>
-                        </p:commandButton>
+                        <p:commandButton update="panelGform"  value="Editar"
+                                       actionListener="#{contatoController.prepararAlterarContato(contatos)}" oncomplete="PF('dlgContato').show()"  />
                         
                         
                     </p:column>
